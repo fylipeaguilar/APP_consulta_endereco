@@ -1,0 +1,89 @@
+<html lang="pt-br">
+	<head>
+		<meta charset="utf-8">
+		<title>App Pesquisa Endereço</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	
+		<script>
+				function getDadosEnderecoPorCEP (cep) {
+					console.log(cep);
+
+					// Estamos usando a API do site "https://viacep.com.br/"
+					let url = 'https://viacep.com.br/ws/'+cep+'/json/unicode/';
+					console.log(url)
+
+					// Criando uma variável para manipular (coleta) os dados de retorno da API
+					let xmlHttp = new XMLHttpRequest()
+					xmlHttp.open('GET', url)
+
+					// Controlando o status e o estado da requisição
+					xmlHttp.onreadystatechange = () => {
+						if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+							console.log(xmlHttp.responseText)
+
+							// Retorno da requisição no formato texto
+							let dadosJSONText = xmlHttp.responseText
+
+							// Transformando o texto da resposta da requisição para um objeto
+							let dadosJSONobj = JSON.parse(dadosJSONText)
+
+							// Passando os dados do objeto para a aplicação (site/tela)
+							document.getElementById('endereco').value = dadosJSONobj.logradouro
+							document.getElementById('bairro').value = dadosJSONobj.bairro
+							document.getElementById('cidade').value = dadosJSONobj.localidade
+							document.getElementById('uf').value = dadosJSONobj.uf
+						}
+					}
+
+					//Enviando os dados da requisição
+					xmlHttp.send();
+				}
+		</script>
+
+	</head>
+	<body>
+		
+		<nav class="navbar navbar-light bg-light mb-4">
+			<div class="container">
+				<div class="navbar-brand mb-0 h1">
+					<h3>App Pesquisa Endereço</h3>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+			<div class="row form-group">
+				<div class="col-sm-3">
+					<input type="text" class="form-control" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)" />
+				</div>
+				<div class="col-sm-9">
+					<!-- a sintaxe "readonly" é para bloquear a escrita de um campo -->
+					<!-- o campo fica para somente leitura, bloqueado para escrita -->
+					<input type="text" class="form-control" placeholder="Endereço" readonly id="endereco" />
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-sm-6">
+					<!-- a sintaxe "readonly" é para bloquear a escrita de um campo -->
+					<!-- o campo fica para somente leitura, bloqueado para escrita -->
+					<input type="text" class="form-control" placeholder="Bairro" readonly id="bairro" />
+
+				</div>
+				<div class="col-sm-4">
+					<!-- a sintaxe "readonly" é para bloquear a escrita de um campo -->
+					<!-- o campo fica para somente leitura, bloqueado para escrita -->
+					<input type="text" class="form-control" placeholder="Cidade" readonly id="cidade" />
+
+				</div>
+
+				<div class="col-sm-2">
+					<!-- a sintaxe "readonly" é para bloquear a escrita de um campo -->
+					<!-- o campo fica para somente leitura, bloqueado para escrita -->
+					<input type="text" class="form-control" placeholder="UF" readonly id="uf" />
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
